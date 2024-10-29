@@ -1,0 +1,20 @@
+- name: Install Git on dev environment instances
+  hosts: _dev_server
+  become: true
+  tasks:
+    - name: Update the package cache (Debian-based systems)
+      ansible.builtin.apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install Git on Debian-based systems
+      ansible.builtin.apt:
+        name: git
+        state: present
+      when: ansible_os_family == "Debian"
+      
+    - name: Install Git on RedHat-based systems
+      ansible.builtin.yum:
+        name: git
+        state: present
+      when: ansible_os_family == "RedHat"
